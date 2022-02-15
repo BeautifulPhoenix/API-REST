@@ -9,40 +9,38 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("apilibrary")
 public class LibraryRestController {
-	
+
 	@Autowired
 	BookService bookservice;
-	
-	//here we are creating our endpoint rest api
+
+	// here we are creating our endpoint rest api
 	@GetMapping("books")
 	public Iterable<Book> getAllBooks() {
-		//to-do 
+		// to-do
 		return bookservice.queryBook();
 	}
-	
-	@GetMapping("movies")
-	public Iterable<Movie> getAllMovies (){
-		return null;
-		
-		
-	}
+
 	@GetMapping("newspapers")
-	public Iterable<Newspaper> getAllNewsPaper (){
+	public Iterable<Newspaper> getAllNewsPaper() {
 		return null;
-		
-		
-	} 
-	
-	@GetMapping("fakenews")
-	public String getAllFakenew (){
-		return "elreydimite";
-		
-		
+
 	}
-	
+
+	@GetMapping("fakenews")
+	public String getAllFakenew() {
+		return "elreydimite";
+
+	}
+
 	@GetMapping("authors")
 	public Iterable<author> getAllAuthors() {
-		 
+
 		return authorservice.queryauthor();
+	}
+
+	@GetMapping("Movies")
+	public Iterable<Movie> getAllMovies() {
+
+		return Movieservice.queryMovies();
 	}
 }
