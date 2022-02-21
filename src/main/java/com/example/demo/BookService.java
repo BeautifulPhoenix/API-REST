@@ -45,11 +45,11 @@ public class BookService {
 
 		int index = -1;
 
-		for (Book bookTemporal : this.books) {
+		for (Book bookTemporal : books) {
 
 			if (bookTemporal.getTitle().equals(title)) {
 
-				index = this.books.indexOf(bookTemporal);
+				index = books.indexOf(bookTemporal);
 
 			}
 
@@ -58,13 +58,18 @@ public class BookService {
 
 	}
 
-	public void replaceBook(int indexBook, Book book) {
+	public Book replaceBook(int indexBook, Book book) {
+
+		books.set(indexBook, book);
+
+		return book;
 
 	}
 
 	public Book getBookByIndex(int index) {
 
 		Book book = books.get(index);
+
 		return book;
 	}
 }

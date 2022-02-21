@@ -74,22 +74,38 @@ public class LibraryRestController {
 	}
 
 	@PostMapping("/replaceBook/{title}")
-	public Book updateBook(@PathVariable String title, Book bookFromRest) {
+	public String updateBook(@PathVariable String title, @RequestBody Book bookFromRest) {
 
 		String responseUpdate = "";
 
 		int indexBook = bookservice.findBookByTilte(title);
-		if (indexBook != -1) {
+		if (indexBook == -1) {
 			responseUpdate = responseUpdate + "book not found";
 		} else {
 
 			Book bookToUpdate = bookservice.getBookByIndex(indexBook);
 
+			// we are going to compare both books:
+			// bookFromRest vs bookToUpdate
+			// we need to compare each field of our object
+			responseUpdate += "book found";
+
+			if (bookFromRest.getAuthor() != null) {
+				responseUpdate += " - author name value updated: " + bookFromRest.getAuthor() + "( old value: "
+						+ bookToUpdate.getAuthor() + ")";
+				bookToUpdate.setAuthor(bookFromRest.getAuthor());
+			}
+			if (bookFromRest.getISBN() != null)
+				bookToUpdate.setISBN(bookFromRest.getISBN());
+			if (bookFromRest.getPages() != 0)
+				bookToUpdate.setPages(bookFromRest.getPages());
+
 			bookservice.replaceBook(indexBook, bookToUpdate);
 
 		}
 
-		return bookFromRest;
+		return responseUpdate;
 
 	}
+
 }
