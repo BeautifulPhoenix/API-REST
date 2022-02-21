@@ -72,4 +72,24 @@ public class LibraryRestController {
 
 		return responsedelete;
 	}
+
+	@PostMapping("/replaceBook/{title}")
+	public Book updateBook(@PathVariable String title, Book bookFromRest) {
+
+		String responseUpdate = "";
+
+		int indexBook = bookservice.findBookByTilte(title);
+		if (indexBook != -1) {
+			responseUpdate = responseUpdate + "book not found";
+		} else {
+
+			Book bookToUpdate = bookservice.getBookByIndex(indexBook);
+
+			bookservice.replaceBook(indexBook, bookToUpdate);
+
+		}
+
+		return bookFromRest;
+
+	}
 }

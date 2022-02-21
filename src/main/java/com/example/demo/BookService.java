@@ -57,4 +57,14 @@ public class BookService {
 		return index;
 
 	}
+
+	public void replaceBook(int indexBook, Book book) {
+
+	}
+
+	public Book getBookByIndex(int index) {
+
+		Book book = books.get(index);
+		return book;
+	}
 }
