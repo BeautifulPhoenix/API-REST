@@ -1,6 +1,8 @@
 package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,7 +55,7 @@ public class LibraryRestController {
 
 		System.out.println("This is the object that gets from client/postman in java class book: " + book);
 
-		Book bookesaved = bookservice.addBookArray(book);
+		Book bookesaved = bookservice.addBookToArray(book);
 
 		return bookesaved;
 
@@ -74,37 +76,61 @@ public class LibraryRestController {
 	}
 
 	@PostMapping("/replaceBook/{title}")
-	public String updateBook(@PathVariable String title, @RequestBody Book bookFromRest) {
+	public ResponseEntity<Book> updateBook(@PathVariable String title, @RequestBody Book bookFromRest) {
 
 		String responseUpdate = "";
+		Book bookToUpdate = null;
 
 		int indexBook = bookservice.findBookByTilte(title);
 		if (indexBook == -1) {
 			responseUpdate = responseUpdate + "book not found";
 		} else {
 
-			Book bookToUpdate = bookservice.getBookByIndex(indexBook);
+			bookToUpdate = bookservice.getBookByIndex(indexBook);
 
 			// we are going to compare both books:
 			// bookFromRest vs bookToUpdate
 			// we need to compare each field of our object
 			responseUpdate += "book found";
+			boolean updated = false;
 
 			if (bookFromRest.getAuthor() != null) {
 				responseUpdate += " - author name value updated: " + bookFromRest.getAuthor() + "( old value: "
 						+ bookToUpdate.getAuthor() + ")";
 				bookToUpdate.setAuthor(bookFromRest.getAuthor());
+				updated = true;
 			}
-			if (bookFromRest.getISBN() != null)
+			if (bookFromRest.getISBN() != null) {
+				responseUpdate += " - ISBN value updated: " + bookFromRest.getISBN() + "( old value: "
+						+ bookToUpdate.getISBN() + ")";
 				bookToUpdate.setISBN(bookFromRest.getISBN());
-			if (bookFromRest.getPages() != 0)
+				updated = true;
+			}
+			if (bookFromRest.getPages() != 0) {
+				responseUpdate += " - pages int value updated: " + bookFromRest.getPages() + "( old value: "
+						+ bookToUpdate.getPages() + ")";
 				bookToUpdate.setPages(bookFromRest.getPages());
+				updated = true;
+			}
+			if (bookFromRest.getYear() != 0) {
+				responseUpdate += " - year int value updated: " + bookFromRest.getYear() + "( old value: "
+						+ bookToUpdate.getYear() + ")";
+				bookToUpdate.setYear(bookFromRest.getYear());
+				updated = true;
+			}
 
-			bookservice.replaceBook(indexBook, bookToUpdate);
-
+			if (!updated)
+				responseUpdate += " - try to update but any field updated - something wrong happened";
+			else
+				bookservice.replaceBook(indexBook, bookToUpdate);
 		}
 
-		return responseUpdate;
+		var headers = new HttpHeaders();
+		headers.add("ResponseUpdate", "updateBook executed");
+		headers.add("version", "1.0 Api Rest Book Object");
+		headers.add("Executed Output", responseUpdate);
+
+		return ResponseEntity.accepted().headers(headers).body(bookToUpdate);
 
 	}
 

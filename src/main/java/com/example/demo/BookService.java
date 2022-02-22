@@ -20,17 +20,18 @@ public class BookService {
 		books.add(book1);
 	}
 
-	public List<Book> queryBook() {
-		System.out.println("Books" + "books");
+	public List<Book> queryBooksFromArray() {
+
+		System.out.println("Books" + books);
+
 		return books;
 	}
 
-	public Book addBookArray(Book book) {
+	public Book addBookToArray(Book book) {
 
 		books.add(book);
 
 		return book;
-
 	}
 
 	public String deleteBookFromArray(String title) {
@@ -38,24 +39,26 @@ public class BookService {
 		int index = findBookByTilte(title);
 		books.remove(index);
 
-		return "Book deleted";
+		return "Book deleted by title";
+	}
+
+	public String deleteBookFromArray(int index) {
+
+		books.remove(index);
+
+		return "Book deleted by index";
 	}
 
 	public int findBookByTilte(String title) {
 
 		int index = -1;
-
 		for (Book bookTemporal : books) {
 
 			if (bookTemporal.getTitle().equals(title)) {
-
 				index = books.indexOf(bookTemporal);
-
 			}
-
 		}
 		return index;
-
 	}
 
 	public Book replaceBook(int indexBook, Book book) {
@@ -72,4 +75,9 @@ public class BookService {
 
 		return book;
 	}
+
+	public Iterable<Book> queryBook() {
+		return null;
+	}
+
 }
