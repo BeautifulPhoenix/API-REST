@@ -18,6 +18,8 @@ public class LibraryRestController {
 
 	@Autowired
 	BookService bookservice;
+	@Autowired
+	Authorservice authorservice;
 
 	// here we are creating our endpoint rest api
 	@GetMapping("books")
@@ -39,9 +41,9 @@ public class LibraryRestController {
 	}
 
 	@GetMapping("authors")
-	public Iterable<author> getAllAuthors() {
+	public Iterable<Author> getAllAuthors() {
 
-		return authorservice.queryauthor();
+		return authorservice.querryAuthorsFromArray();
 	}
 
 	@GetMapping("Movies")
@@ -51,13 +53,27 @@ public class LibraryRestController {
 	}
 
 	@PostMapping(path = "/addauthor", consumes = "application/json")
-	public author createAuthor(@RequestBody author author) {
+	public Author createAuthor(@RequestBody Author author) {
 		System.out.println("This is the object that gets from client/postman in java class book: " + author);
 
-		author authorsaved = authorservice.addAuthorToArray(author);
+		Author authorsaved = authorservice.addAuthorToArray(author);
 
 		return authorsaved;
 
+	}
+
+	@DeleteMapping("/deleteAuthor/{name}")
+	public String deleteauthor(@PathVariable String name) {
+
+		String responsedelete = "";
+
+		if (authorservice.findAuthorByTilte(name) != -1) {
+			authorservice.deleteAuthorFromArray(name);
+			responsedelete = responsedelete + "Author: " + name + " - deleted succes";
+		} else
+			responsedelete = responsedelete + "Author: " + name + " - not deleted fail";
+
+		return responsedelete;
 	}
 
 	@PostMapping(path = "/addBook", consumes = "application/json")
