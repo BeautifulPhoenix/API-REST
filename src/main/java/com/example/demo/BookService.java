@@ -20,7 +20,7 @@ public class BookService {
 		books.add(book1);
 	}
 
-	public List<Book> queryBooksFromArray() {
+	public static List<Book> queryBooksFromArray() {
 
 		System.out.println("Books" + books);
 

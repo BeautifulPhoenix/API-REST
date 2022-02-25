@@ -21,6 +21,14 @@ public class authorservice {
 	}
 
 	public static List<author> queryauthor() {
+
+		System.out.println("Authors" + author);
+
+		return author;
+	}
+
+	public author addAuthorToArray(author author) {
+		author.add(author);
 		return author;
 	}
 

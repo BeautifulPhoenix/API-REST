@@ -50,6 +50,16 @@ public class LibraryRestController {
 		return Movieservice.queryMovies();
 	}
 
+	@PostMapping(path = "/addauthor", consumes = "application/json")
+	public author createAuthor(@RequestBody author author) {
+		System.out.println("This is the object that gets from client/postman in java class book: " + author);
+
+		author authorsaved = authorservice.addAuthorToArray(author);
+
+		return authorsaved;
+
+	}
+
 	@PostMapping(path = "/addBook", consumes = "application/json")
 	public Book createBook(@RequestBody Book book) {
 
