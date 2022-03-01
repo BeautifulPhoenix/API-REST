@@ -20,22 +20,26 @@ public class Authorservice {
         authors.add(author1);
     }
 
+    // querry Autores a la array
     public List<Author> querryAuthorsFromArray() {
 
         return authors;
     }
 
+    // agregar autores a la Array
     public Author addAuthorToArray(Author author) {
         authors.add(author);
         return author;
     }
 
+    // Eliminar autores de la Array
     public String deleteAuthorFromArray(String index) {
         authors.remove(index);
 
         return "Author deleted by index";
     }
 
+    // Buscar Autores por Titulo
     public int findAuthorByTilte(String name) {
         int index = -1;
         for (Author Authortemp : authors) {
@@ -47,6 +51,22 @@ public class Authorservice {
 
         }
         return index;
+    }
+
+    // Remplazar Autor
+
+    public Author replaceAuthor(int indexAuthor, Author author) {
+
+        authors.set(indexAuthor, author);
+
+        return author;
+
+    }
+
+    public Author getAuthorByIndex(int index) {
+        Author author = authors.get(index);
+
+        return author;
     }
 
     public Iterable<Author> queryauthor() {

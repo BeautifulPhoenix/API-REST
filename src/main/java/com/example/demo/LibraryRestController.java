@@ -76,6 +76,69 @@ public class LibraryRestController {
 		return responsedelete;
 	}
 
+	@PostMapping("/replaceAuthor/{name}")
+	public ResponseEntity<Author> updateAuthor(@PathVariable String name, @RequestBody Author authorFromRest) {
+
+		String responseUpdate = "";
+		Author authorToUpdate = null;
+
+		int indexAuthor = authorservice.findAuthorByTilte(name);
+		if (indexAuthor == -1) {
+			responseUpdate = responseUpdate + "Author not found";
+		} else {
+
+			authorToUpdate = authorservice.getAuthorByIndex(indexAuthor);
+
+			responseUpdate += "Author found";
+			boolean updated = false;
+
+			if (authorFromRest.getname() != null) {
+				responseUpdate += "Name value updated: " + authorFromRest.getname() + "(old value: "
+						+ authorToUpdate.getname() + ")";
+				authorToUpdate.setname(authorFromRest.getname());
+				updated = true;
+
+			}
+
+			if (authorFromRest.getcountry() != null) {
+				responseUpdate += "Country value updated: " + authorFromRest.getcountry() + "( old value: "
+						+ authorToUpdate.getcountry() + ")";
+				authorToUpdate.setcountry(authorFromRest.getcountry());
+				updated = true;
+
+			}
+
+			if (authorFromRest.getdob() != 0) {
+				responseUpdate += " - dob int value updated: " + authorFromRest.getdob() + "(old value: "
+						+ authorToUpdate.getdob() + ")";
+				authorToUpdate.setdob(authorFromRest.getdob());
+				updated = true;
+
+			}
+
+			if (authorFromRest.getqtyBooks() != 0) {
+				responseUpdate += "- qtyBooks int value updated: " + authorFromRest.getqtyBooks() + "(old value: "
+						+ authorToUpdate.getqtyBooks() + ")";
+				authorToUpdate.setqtyBooks(authorFromRest.getqtyBooks());
+				updated = true;
+
+			}
+
+			if (!updated)
+				responseUpdate += " - try to update but any field updated - something wrong happened";
+			else
+				authorservice.replaceAuthor(indexAuthor, authorToUpdate);
+		}
+
+		var headers = new HttpHeaders();
+		headers.add("ResponseUpdate", "updateAuthor executed");
+		headers.add("version", "1.0 Api Rest Author Object");
+		headers.add("Executed Output", responseUpdate);
+
+		return ResponseEntity.accepted().headers(headers).body(authorToUpdate);
+
+	}
+
 	@PostMapping(path = "/addBook", consumes = "application/json")
 	public Book createBook(@RequestBody Book book) {
 
