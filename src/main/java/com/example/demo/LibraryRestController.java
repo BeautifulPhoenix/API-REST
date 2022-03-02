@@ -62,18 +62,42 @@ public class LibraryRestController {
 
 	}
 
-	@DeleteMapping("/deleteAuthor/{name}")
-	public String deleteauthor(@PathVariable String name) {
+	/**
+	 * @DeleteMapping("/deleteAuthor/{name}")
+	 * public String deleteauthor(@PathVariable String name) {
+	 * 
+	 * String responsedelete = "";
+	 * 
+	 * if (authorservice.findAuthorByTilte(name) != -1) {
+	 * authorservice.deleteAuthorFromArray(name);
+	 * responsedelete = responsedelete + "Author: " + name + " - deleted succes";
+	 * } else
+	 * responsedelete = responsedelete + "Author: " + name + " - not deleted fail";
+	 * 
+	 * return responsedelete;
+	 * }
+	 * 
+	 */
 
+	@PostMapping("/deleteAuthor/{name}")
+	public ResponseEntity<Author> deleteauthor(@PathVariable String name, Author authorFromRest) {
 		String responsedelete = "";
+		Author authorToDeletede = null;
 
 		if (authorservice.findAuthorByTilte(name) != -1) {
 			authorservice.deleteAuthorFromArray(name);
 			responsedelete = responsedelete + "Author: " + name + " - deleted succes";
-		} else
+		} else {
 			responsedelete = responsedelete + "Author: " + name + " - not deleted fail";
+		}
 
-		return responsedelete;
+		var headers = new HttpHeaders();
+		headers.add("Responsedelete", "deleteauthor executed");
+		headers.add("version", "1.0 Api Author object");
+		headers.add("Executed Output", responsedelete);
+
+		return ResponseEntity.accepted().headers(headers).body(authorToDeletede);
+
 	}
 
 	@PostMapping("/replaceAuthor/{name}")
