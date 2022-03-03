@@ -79,16 +79,32 @@ public class LibraryRestController {
 	 * 
 	 */
 
-	@PostMapping("/deleteAuthor/{name}")
+	/*
+	 * 
+	 * if (authorservice.findAuthorByTilte(name) != -1) {
+	 * authorservice.deleteAuthorFromArray(name);
+	 * responsedelete = responsedelete + "Author: " + name + " - deleted succes";
+	 * } else {
+	 * responsedelete = responsedelete + "Author: " + name + " - not deleted fail";
+	 * }
+	 */
+
+	@DeleteMapping("/deleteAuthor/{name}")
 	public ResponseEntity<Author> deleteauthor(@PathVariable String name, Author authorFromRest) {
 		String responsedelete = "";
 		Author authorToDeletede = null;
 
-		if (authorservice.findAuthorByTilte(name) != -1) {
-			authorservice.deleteAuthorFromArray(name);
-			responsedelete = responsedelete + "Author: " + name + " - deleted succes";
+		int indexAuthor = authorservice.findAuthorByName(name);
+		if (indexAuthor != -1) {
+			responsedelete = name;
+
+			authorservice.deleteAuthorFromArray(responsedelete);
+
+			System.out.println("Author found " + responsedelete);
 		} else {
 			responsedelete = responsedelete + "Author: " + name + " - not deleted fail";
+			System.out.println("Author Not found " + responsedelete);
+
 		}
 
 		var headers = new HttpHeaders();
@@ -106,7 +122,7 @@ public class LibraryRestController {
 		String responseUpdate = "";
 		Author authorToUpdate = null;
 
-		int indexAuthor = authorservice.findAuthorByTilte(name);
+		int indexAuthor = authorservice.findAuthorByName(name);
 		if (indexAuthor == -1) {
 			responseUpdate = responseUpdate + "Author not found";
 		} else {
