@@ -96,11 +96,10 @@ public class LibraryRestController {
 
 		int indexAuthor = authorservice.findAuthorByName(name);
 		if (indexAuthor != -1) {
-			responsedelete = name;
 
-			authorservice.deleteAuthorFromArray(responsedelete);
-
-			System.out.println("Author found " + responsedelete);
+			authorservice.deleteAuthorFromArray(indexAuthor);
+			authorToDeletede = authorFromRest;
+			System.out.println("Author found: " + responsedelete);
 		} else {
 			responsedelete = responsedelete + "Author: " + name + " - not deleted fail";
 			System.out.println("Author Not found " + responsedelete);

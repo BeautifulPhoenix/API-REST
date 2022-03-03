@@ -33,7 +33,7 @@ public class Authorservice {
     }
 
     // delete author from Array
-    public String deleteAuthorFromArray(String index) {
+    public String deleteAuthorFromArray(int index) {
         authors.remove(index);
 
         return "Author deleted by index";
