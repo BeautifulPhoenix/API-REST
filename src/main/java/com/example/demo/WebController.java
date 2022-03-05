@@ -23,7 +23,7 @@ public class WebController implements WebMvcConfigurer {
 
     @GetMapping("/")
     public String showForm(Author author) {
-        return "Form";
+        return "web";
 
     }
 
@@ -31,7 +31,7 @@ public class WebController implements WebMvcConfigurer {
     public String checkPersonInfo(@Valid Author author, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return "form";
+            return "web";
 
         }
 
@@ -39,7 +39,7 @@ public class WebController implements WebMvcConfigurer {
 
     }
 
-    // Web Service
+    // Web Controll
     @RequestMapping("/web")
     public String getWeb() {
         System.out.println("Controller Web Request");
